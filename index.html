@@ -1,7 +1,205 @@
 <!DOCTYPE html>
-<html>
-<body>
-<h1>Hello World</h1>
-<p>I'm Richie hosted with GitHub Pages.</p>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
+	<meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Will A Tactical Vote Work?</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="lib/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+	<style>
+		body {
+			padding-top: 50px;
+		}
+		
+		.starter-template {
+			padding: 40px 15px;
+			text-align: center;
+		}
+		
+	</style>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="js/tacticalvotesimulator.js"></script>
+
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Tactical Vote Simulator</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Results</a></li>
+            <li><a href="#assumptions">Assumptions</a></li>
+			<li><a href="#data">Data Sources</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Will A Tactical Vote Work?</h1>
+        <p class="lead">If Labour, Lib Dem and Green supporters vote tactically, could they beat the Tories?</p>
+		<p>
+		The following simulator looks at the 2015 election results and re-allocates the Labour, Lib Dem and Green votes based on tactical voting.<br>
+		It uses the tactical voting recommendations from the site <a target="_blank">www.tactical2017.com</a><br>
+		Note that the tactical recommendations can be for parties other than the 3 mentioned above e.g. SNP and therefore such parties can receive the tactical votes.  
+		However, this simulation assumes that other party supporters will not participate in the tactical vote themselves, hence their votes are not re-allocated.
+		</p>
+		
+		<div class="row">
+		
+			<div class="col-md-4 panel panel-default" style="padding:0px">
+			
+				<div class="panel-heading"><h3 class="panel-title">Simulation Parameters</h3></div>
+				
+				<div class="panel-body">
+				
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="tacticalVotePerc" style="width:100">Tactical Vote Percentage</label>
+							<input type="number" class="form-control" style="width:70px" id="tacticalVotePerc" value="50" min="0" max="100" >
+						</div>
+						<p class="form-text text-muted">Enter the percentage of Labour, Lib Dem and Green supporters who will vote tactically (Be realistic)</p>
+						<!--<small id="percHelp" class="form-text text-muted">Enter the percentage of Tactical Vote Participation</small>-->
+						
+						<div class="form-group">
+							<label for="pollster" style="width:100">Pollster</label>
+							<select id="pollster" class="form-control" style="width:100"value="YouGov"></select>
+						</div>
+						<p class="form-text text-muted">Choose a pollster. The most recent poll from the selected pollster will be used</p>
+						<p>Date of Poll: <span id="pollDate"></span></p>
+						
+						<div class="form-group">
+							<label for="pollFactor" style="width:100">Poll Factor</label>
+							<input type="number" class="form-control" style="width:70px" id="pollFactor" value="0.5" min="0" max="1" step="0.1">
+						</div>
+						<p class="form-text text-muted">Enter a decimal between 0 and 1 to determine how big a factor the Poll data has on the prediction. I recommend a low value since the poll data is nationwide and does not take region specifics into account.</p>
+						
+						<button id="predictButton" class="btn btn-default" type="button">PREDICT ELECTION</button>
+					</form>
+					
+				</div>
+			
+			
+			</div>		
+			
+			<div class="col-md-1">
+			</div>
+			
+			<div class="col-md-7 panel panel-default">
+				
+			
+				<div class="row">
+					<h2>2015 Election Results</h2>
+					<table class="table table-bordered">
+						<tr>
+							<th>Tory Seats 2015</th>
+							<th>Labour Seats 2015</th>
+							<th>Lib Dem Seats 2015</th>
+							<th>SNP Seats 2015</th>
+							<th>Green Seats 2015</th>
+							<th>UKIP Seats 2015</th>
+							<th>Other Seats 2015</th>
+						</tr>
+						<tr>
+							<td>330</td>
+							<td>232</td>
+							<td>8</td>
+							<td>56</td>
+							<td>1</td>
+							<td>1</td>
+							<td>22</td>
+						</tr>
+					</table>
+				</div>
+			
+			
+				<div class="row">
+					<h2>2017 Predicted Results</h2>
+					<table class="table table-bordered">
+						<tr>
+							<th>Predicted Tory Seats 2017</th>
+							<th>Predicted Labour Seats 2017</th>
+							<th>Predicted Lib Dem Seats 2017</th>
+							<th>Predicted SNP Seats 2017</th>
+							<th>Predicted Green Seats 2017</th>
+							<th>Predicted UKIP Seats 2017</th>
+							<th>Predicted Other Seats 2017</th>
+						</tr>
+						<tr>
+							<td id="newTory"></td>
+							<td id="newLabour"></td>
+							<td id="newLib"></td>
+							<td id="newSNP"></td>		
+							<td id="newGreen"></td>
+							<td id="newUKIP"></td>		
+							<td id="newOther"></td>
+						</tr>
+					</table>
+				</div>		
+
+			</div>
+		</div>
+		
+		<div class="row">
+		
+			<h2>Constituency Level Predictions</h2>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Consituency</th>
+						<th>Tory Votes</th>
+						<th>Labour Votes</th>
+						<th>Lib Dem Votes</th>
+						<th>Green Votes</th>
+						<th>UKIP Votes</th>		
+						<th>Tactical Recommendation</th>
+						<th>Last Winner</th>
+						<th>New Winner</th>
+						<th>Winning Votes</th>
+					</tr>
+				</thead>
+				<tbody id="cons">				
+				</tbody>
+			</table>
+				
+		</div>
+		
+		
+      </div>
+
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+    <script>window.jQuery</script>
+    <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+  </body>
 </html>
