@@ -14,11 +14,15 @@
 
     <!-- Bootstrap CSS -->
     <link href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
-	<link href="lib/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" rel="stylesheet">
-
+	<!--<link href="lib/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" rel="stylesheet">-->
+	<link href="css/custom-style.css" rel="stylesheet">
+	
 	<style>
 		body {
 			padding-top: 50px;
+			background-color: #fdbb30;
+			color: #444;
+			font-family: "Montserrat",sans-serif;
 		}
 		
 		.starter-template {
@@ -34,8 +38,8 @@
   </head>
 
   <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+	<!--navbar-inverse-->
+    <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -44,14 +48,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Tactical Vote Simulator</a>
+          <!--<a class="navbar-brand" href="#">Tactical Vote Simulator</a>-->
+		  <div class="navbar-brand">Tactical Vote Simulator</div>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Results</a></li>
-            <li><a href="#assumptions">Assumptions</a></li>
-			<li><a href="#data">Data Sources</a></li>
-            <li><a href="#about">About</a></li>
+            <li class="active"><a href="#simulator" data-toggle="tab">Results</a></li>
+            <li><a href="#info" data-toggle="tab">Logic Info</a></li>
+			<li><a href="#data-sources" data-toggle="tab">Data Sources</a></li>
+            <li><a href="#about" data-toggle="tab">About</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -60,136 +65,297 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Will A Tactical Vote Work?</h1>
-        <p class="lead">If Labour, Lib Dem and Green supporters vote tactically, could they beat the Tories?</p>
-		<p>
-		The following simulator looks at the 2015 election results and re-allocates the Labour, Lib Dem and Green votes based on tactical voting.<br>
-		It uses the tactical voting recommendations from the site <a target="_blank">www.tactical2017.com</a><br>
-		Note that the tactical recommendations can be for parties other than the 3 mentioned above e.g. SNP and therefore such parties can receive the tactical votes.  
-		However, this simulation assumes that other party supporters will not participate in the tactical vote themselves, hence their votes are not re-allocated.
-		</p>
+
+		<div id="myTabContent" class="tab-content">
 		
-		<div class="row">
-		
-			<div class="col-md-4 panel panel-default" style="padding:0px">
-			
-				<div class="panel-heading"><h3 class="panel-title">Simulation Parameters</h3></div>
+			<div id="simulator" class="tab-pane fade active in" role="tabpanel">
+        
+				<h1>Will A Tactical Vote Work?</h1>
+				<p class="lead">If Labour, Lib Dem and Green supporters vote tactically, could they beat the Tories?</p>
+				<p class="centre-text">
+				The following simulator re-allocates Labour, Lib Dem and Green votes based on tactical voting.<br>
+				It uses the tactical voting recommendations from the site <a target="_blank" href="http://www.tactical2017.com">www.tactical2017.com</a><br>
+				This CRUDE projection is based on the 2015 General Election vote counts combined with recent poll data to provide a swing.<br>
+				You can set the parameters such as the amount of people participating in the tactical vote and the factor polls have on determining swing.  So, if you're a real optimist, set tactical vote participation to 100%, choose the YouGov poll and set poll factor to 1. 
+				</p>
 				
-				<div class="panel-body">
+				<div class="row">
 				
-					<form class="form-inline">
-						<div class="form-group">
-							<label for="tacticalVotePerc" style="width:100">Tactical Vote Percentage</label>
-							<input type="number" class="form-control" style="width:70px" id="tacticalVotePerc" value="50" min="0" max="100" >
-						</div>
-						<p class="form-text text-muted">Enter the percentage of Labour, Lib Dem and Green supporters who will vote tactically (Be realistic)</p>
-						<!--<small id="percHelp" class="form-text text-muted">Enter the percentage of Tactical Vote Participation</small>-->
-						
-						<div class="form-group">
-							<label for="pollster" style="width:100">Pollster</label>
-							<select id="pollster" class="form-control" style="width:100"value="YouGov"></select>
-						</div>
-						<p class="form-text text-muted">Choose a pollster. The most recent poll from the selected pollster will be used</p>
-						<p>Date of Poll: <span id="pollDate"></span></p>
-						
-						<div class="form-group">
-							<label for="pollFactor" style="width:100">Poll Factor</label>
-							<input type="number" class="form-control" style="width:70px" id="pollFactor" value="0.5" min="0" max="1" step="0.1">
-						</div>
-						<p class="form-text text-muted">Enter a decimal between 0 and 1 to determine how big a factor the Poll data has on the prediction. I recommend a low value since the poll data is nationwide and does not take region specifics into account.</p>
-						
-						<button id="predictButton" class="btn btn-default" type="button">PREDICT ELECTION</button>
-					</form>
+					<div class="col-md-4 panel panel-green" style="padding:0px">
 					
+						<div class="panel-heading"><h3 class="panel-title">Simulation Parameters</h3></div>
+						
+						<div class="panel-body">
+						
+							<form class="form-inline">
+								<div class="form-group">
+									<label for="tacticalVotePerc" style="width:100">Tactical Vote Percentage</label>
+									<input type="number" class="form-control" style="width:70px" id="tacticalVotePerc" value="50" min="0" max="100" >
+								</div>
+								<p class="form-text text-muted">Enter the percentage of Labour, Lib Dem and Green supporters who will vote tactically (Be realistic)</p>
+								<!--<small id="percHelp" class="form-text text-muted">Enter the percentage of Tactical Vote Participation</small>-->
+								
+								<div class="form-group">
+									<label for="pollster" style="width:100">Pollster</label>
+									<select id="pollster" class="form-control" style="width:100"value="YouGov"></select>
+								</div>
+								<p class="form-text text-muted">Choose a pollster. The most recent poll from the selected pollster will be used</p>
+								<p>Date of Poll: <span id="pollDate"></span></p>
+								
+								<div class="form-group">
+									<label for="pollFactor" style="width:100">Poll Factor</label>
+									<input type="number" class="form-control" style="width:70px" id="pollFactor" value="1" min="0" max="1" step="0.1">
+								</div>
+								<p class="form-text text-muted">Enter a decimal between 0 and 1 to determine how big a factor the Poll data has on the swing. Should we take polls with a pinch of salt?</p>
+								
+								<button id="tacticalButton" class="btn btn-danger" type="button">SIMULATE TACTICAL VOTE</button>
+							</form>
+							
+						</div>
+					
+					
+					</div>		
+					
+					<div class="col-md-1">
+					</div>
+					
+					<div class="col-md-7 panel panel-green">
+						
+						<div class="row">
+							
+							<div class="panel panel-green">
+							<!--<h2>2015 Election Results</h2>-->
+								<div class="panel-heading"><h3 class="panel-title">2015 Election Results</h3></div>
+						
+								<div class="panel-body">							
+							
+									<table class="table table-bordered">
+										<tr>
+											<th>Tory Seats 2015</th>
+											<th>Labour Seats 2015</th>
+											<th>Lib Dem Seats 2015</th>
+											<th>SNP Seats 2015</th>
+											<th>Green Seats 2015</th>
+											<th>UKIP Seats 2015</th>
+											<th>Other Seats 2015</th>
+										</tr>
+										<tr>
+											<td class="tory">330</td>
+											<td class="labour">232</td>
+											<td class="libdem">8</td>
+											<td class="snp">56</td>
+											<td class="green-party">1</td>
+											<td class="ukip">1</td>
+											<td>22</td>
+										</tr>
+									</table>
+									
+								</div>	
+							</div>
+						</div>
+					
+					
+						<div class="row">
+						
+							<div class="panel panel-green">
+							<!--<h2>2015 Election Results</h2>-->
+								<div class="panel-heading"><h3 class="panel-title">2017 Poll Projected Results</h3></div>
+						
+								<div class="panel-body">							
+
+									<table class="table table-bordered">
+										<tr>
+											<th>Projected Tory Seats 2017</th>
+											<th>Projected Labour Seats 2017</th>
+											<th>Projected Lib Dem Seats 2017</th>
+											<th>Projected SNP Seats 2017</th>
+											<th>Projected Green Seats 2017</th>
+											<th>Projected UKIP Seats 2017</th>
+											<th>Projected Other Seats 2017</th>
+										</tr>
+										<tr>
+											<td id="newTory" class="tory"></td>
+											<td id="newLabour" class="labour"></td>
+											<td id="newLib" class="libdem"></td>
+											<td id="newSNP" class="snp"></td>		
+											<td id="newGreen" class="green-party"></td>
+											<td id="newUKIP" class="ukip"></td>		
+											<td id="newOther"></td>
+										</tr>
+									</table>
+									
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+						
+							<div class="panel panel-green">
+							<!--<h2>2015 Election Results</h2>-->
+								<div class="panel-heading"><h3 class="panel-title">2017 Projected Tactical Vote Results</h3></div>
+						
+								<div class="panel-body">						
+
+									<table class="table table-bordered">
+										<tr>
+											<th>Projected Tory Seats 2017</th>
+											<th>Projected Labour Seats 2017</th>
+											<th>Projected Lib Dem Seats 2017</th>
+											<th>Projected SNP Seats 2017</th>
+											<th>Projected Green Seats 2017</th>
+											<th>Projected UKIP Seats 2017</th>
+											<th>Projected Other Seats 2017</th>
+										</tr>
+										<tr>
+											<td id="newTory2" class="tory"></td>
+											<td id="newLabour2" class="labour"></td>
+											<td id="newLib2" class="libdem"></td>
+											<td id="newSNP2" class="snp"></td>		
+											<td id="newGreen2" class="green-party"></td>
+											<td id="newUKIP2" class="ukip"></td>		
+											<td id="newOther2"></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>						
+
+					</div>
 				</div>
-			
-			
-			</div>		
-			
-			<div class="col-md-1">
+				
+				<div class="row">
+
+					<div class="panel panel-red" style="margin-top:20px">
+					<!--<h2>2015 Election Results</h2>-->
+						<div class="panel-heading"><h3 class="panel-title">Constituency Level Tactical Vote Projections</h3></div>
+				
+						<div class="panel-body">
+						
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Consituency</th>
+										<th>Tory Votes</th>
+										<th>Labour Votes</th>
+										<th>Lib Dem Votes</th>
+										<th>SNP Votes</th>
+										<th>Green Votes</th>
+										<th>UKIP Votes</th>		
+										<th>Tactical Recommendation</th>
+										<th>Last Election Winner</th>
+										<th>New Winner</th>
+										<th>Winning Votes</th>
+									</tr>
+								</thead>
+								<tbody id="cons">				
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+		
+		
 			</div>
 			
-			<div class="col-md-7 panel panel-default">
+			<div id="info" class="tab-pane fade" role="tabpanel">
+			
+				<p class="lead">Expalanation of logic, limitations and false assumptions</p>
 				
+				<ul class="centre-list">
+					<li>
+						<p>
+							The tactical recommendations can be for parties other than Labour, Lib Dem and Green (e.g. SNP, Plaid Cymru) and therefore such parties will receive tactical votes in this simulation.  
+							However, for simplicity, this simulation assumes that supporters of parties outside the aforementioned 3, will not participate in the tactical vote themselves, hence their initial votes are not re-allocated.
+						</p>
+					</li>
+					<li>
+						<p>
+							The percentage of tactical vote participation does not take into account the people who already tactically voted in the last election.  (Unfortunately there's no way of knowing how many of the last election's Labour/Lib Dem votes were Green Supporters tactically voting for example.
+						</p>
+					</li>
+					<li>
+						<p>
+							Polls have been known to be very wrong in recent times<br>
+							On the other hand, a lot has happened since 2015 so the 2015 results aren't much to go on either.<br>  
+						</p>
+					</li>
+					<li>
+						<p>
+							The national level polls don't show how factors such as Brexit and Indyref2 will affect some constuencies' votes more than others and this could have a major effect on the tactical vote. 
+						</p>
+					</li>
+					<li>
+						<p>
+							Some of the recommendations from <a target="_blank" href="http://www.tactical2017.com">www.tactical2017.com</a> do not give a clear singular choice of party, in these cases I simply choose one for simplicity, defaulting to Labour in most cases - just - because. You can see the mapping I use <a target="_blank" href="data/recommendationMapping.json">here</a>
+						</p>
+					</li>
+					<li>
+						<p>
+							Assumes that the 6 parties named in the table, have candidates standing for all the same constituencies as they in the last General Election, which may not be the case, in particularly for UKIP.  This shouldn't affect the results too much. 
+						</p>
+					</li>					
+				</ul> 
 			
-				<div class="row">
-					<h2>2015 Election Results</h2>
-					<table class="table table-bordered">
-						<tr>
-							<th>Tory Seats 2015</th>
-							<th>Labour Seats 2015</th>
-							<th>Lib Dem Seats 2015</th>
-							<th>SNP Seats 2015</th>
-							<th>Green Seats 2015</th>
-							<th>UKIP Seats 2015</th>
-							<th>Other Seats 2015</th>
-						</tr>
-						<tr>
-							<td>330</td>
-							<td>232</td>
-							<td>8</td>
-							<td>56</td>
-							<td>1</td>
-							<td>1</td>
-							<td>22</td>
-						</tr>
-					</table>
-				</div>
-			
-			
-				<div class="row">
-					<h2>2017 Predicted Results</h2>
-					<table class="table table-bordered">
-						<tr>
-							<th>Predicted Tory Seats 2017</th>
-							<th>Predicted Labour Seats 2017</th>
-							<th>Predicted Lib Dem Seats 2017</th>
-							<th>Predicted SNP Seats 2017</th>
-							<th>Predicted Green Seats 2017</th>
-							<th>Predicted UKIP Seats 2017</th>
-							<th>Predicted Other Seats 2017</th>
-						</tr>
-						<tr>
-							<td id="newTory"></td>
-							<td id="newLabour"></td>
-							<td id="newLib"></td>
-							<td id="newSNP"></td>		
-							<td id="newGreen"></td>
-							<td id="newUKIP"></td>		
-							<td id="newOther"></td>
-						</tr>
-					</table>
-				</div>		
 
 			</div>
-		</div>
-		
-		<div class="row">
-		
-			<h2>Constituency Level Predictions</h2>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>Consituency</th>
-						<th>Tory Votes</th>
-						<th>Labour Votes</th>
-						<th>Lib Dem Votes</th>
-						<th>Green Votes</th>
-						<th>UKIP Votes</th>		
-						<th>Tactical Recommendation</th>
-						<th>Last Winner</th>
-						<th>New Winner</th>
-						<th>Winning Votes</th>
-					</tr>
-				</thead>
-				<tbody id="cons">				
-				</tbody>
-			</table>
+			
+			<div id="data-sources" class="tab-pane fade" role="tabpanel">
+			
+				<p class="lead">Data Sources</p>
 				
-		</div>
+				<ul class="centre-list">
+					<li>
+						<p>
+							<strong>Tactical Vote Recommendations</strong>  - taken from <a target="_blank" href="http://www.tactical2017.com">www.tactical2017.com</a>. Click <a target="_blank" href="https://www.tactical2017.com/data/recommendations.json">here</a> to view data. 
+						</p>
+					</li>
+					<li>
+						<p>
+							<strong>2015 General Election Data</strong> - also taken from <a target="_blank" href="http://www.tactical2017.com">www.tactical2017.com</a>. Originally sourced from the <a target="_blank" href="http://www.electoralcommission.org.uk/our-work/our-research/electoral-data">Electoral Commission</a>. Click <a target="_blank" href="http://www.tactical2017.com/data/results.2015.json">here</a> to view data.
+						</p>
+					</li>
+					<li>
+						<p>
+							<strong>Poll Data</strong> - taken from the BBC website.  Click <a target="_blank" href="http://www.bbc.co.uk/indepthtoolkit/data-sets/2017_uk_general_election_polltracker/json-with-props">here</a> to view data. 
+						</p>
+					</li>
+					<li>
+						<p>
+							<strong>My own custom recommendation mappings</strong> - needed to map party names from the tactical recommendations data to election data and also handle non-precise recommendations.   Click <a target="_blank" href="data/recommendationMapping.json">here</a> to view data. 
+						</p>
+					</li>					
+				</ul> 
+			
+
+			</div>		
+
+			<div id="about" class="tab-pane fade" role="tabpanel">
+			
+				<p class="lead">About</p>
+				
+				<ul class="centre-list">
+					<li>
+						<p>
+							This is not intended to help people decide whether to vote tactically or not.  It's just out of curiosity.<br>
+							FYI, I will be tactically voting, whether it's successful or not. 
+						</p>
+					</li>
+					<li>
+						<p>
+							<strong>SUGGESTIONS/IMPROVEMENTS/CONTRIBUTIONS WELCOME</strong> All code can be found <a target="_blank" href="https://github.com/richielewis/richielewis.github.io">here.</a> So you can make contributions yourself using GitHub.<br>
+							
+						</p>
+					</li>
+					
+				</ul> 
+			
+
+			</div>				
 		
+		</div>
 		
       </div>
+	  
 
     </div><!-- /.container -->
 

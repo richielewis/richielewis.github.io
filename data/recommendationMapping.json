@@ -1,0 +1,19 @@
+{
+	"Alliance"							:	"Alliance",
+	"Green" 							:	"Green Party",
+	"Green or Labour TBC"				:	"Labour Party",
+	"Independent Claire Wright"			:	"Independent",
+	"It's complicated"					:	"Unknown",
+	"Labour"							:	"Labour Party",
+	"Labour or Lib Dem TBC"				:	"Labour Party",
+	"Labour, Green or Lib Dem TBC"		:	"Labour Party",
+	"Lib Dem"							:	"Liberal Democrat",
+	"National Health Action"			:	"National Health Action Party",
+	"Plaid Cymru"						:	"Plaid Cymru",
+	"SDLP"								:	"Social Democratic & Labour Party",
+	"SNP"								:	"Scottish National Party",
+	"SNP or Labour TBC"					:	"Labour Party",
+	"SNP or Lib Dem TBC"				:	"Liberal Democrat",
+	"TBC"								:	"Labour Party",
+	"TBC too soon to call"				:	"Labour Party"
+}
