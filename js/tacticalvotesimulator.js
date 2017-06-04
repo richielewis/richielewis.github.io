@@ -32,13 +32,13 @@ function updatePollProjection()
 	var ukipSeats = 0;
 	var otherSeats = 0;
 	
-	//PREVIOUS NATIONAL LEVEL RATINGS BASED ON 2015 SEATS
-	var toryPrevRating = 330/650;
-	var labourPrevRating = 232/650;
-	var libPrevRating = 8/650;
-	var greenPrevRating = 1/650;
-	var ukipPrevRating = 1/650;
-	var snpPrevRating = 56/650;
+	//PREVIOUS NATIONAL LEVEL RATINGS BASED ON 2015 VOTES
+	var toryPrevRating = 0.368;
+	var labourPrevRating = 0.305;
+	var libPrevRating = 0.079;
+	var greenPrevRating = 0.038;
+	var ukipPrevRating = 0.127;
+	var snpPrevRating = 0.047;
 	
 	//GET CURRENT RATINGS FROM SELECTED POLL 
 	poll = pollData[pollSource][pollData[pollSource].length-1];
@@ -241,13 +241,13 @@ function updatePollProjectionAndTacticalVote()
 	var ukipSeats = 0;
 	var otherSeats = 0;
 	
-	//PREVIOUS NATIONAL LEVEL RATINGS BASED ON 2015 SEATS
-	var toryPrevRating = 330/650;
-	var labourPrevRating = 232/650;
-	var libPrevRating = 8/650;
-	var greenPrevRating = 1/650;
-	var ukipPrevRating = 1/650;
-	var snpPrevRating = 56/650;
+	//PREVIOUS NATIONAL LEVEL RATINGS BASED ON 2015 VOTES
+	var toryPrevRating = 0.368;
+	var labourPrevRating = 0.305;
+	var libPrevRating = 0.079;
+	var greenPrevRating = 0.038;
+	var ukipPrevRating = 0.127;
+	var snpPrevRating = 0.047;
 	
 	//GET CURRENT RATINGS FROM SELECTED POLL 
 	poll = pollData[pollSource][pollData[pollSource].length-1];
@@ -584,6 +584,7 @@ $(document).ready(function(){
 		$("#pollDate").text(pollDate);
 
 		updatePollProjection();
+		//updatePollProjectionAndTacticalVote();
 		
 	});	
 	
@@ -596,14 +597,20 @@ $(document).ready(function(){
 		var pollDate = poll["Fieldwork end"];
 		$("#pollDate").text(pollDate);
 		updatePollProjection();
+		//updatePollProjectionAndTacticalVote();
 	});	
 	
 	$("#pollFactor").change(function()
 	{
 		updatePollProjection();
+		//updatePollProjectionAndTacticalVote();
 	});		
 	
-	
+	$("#tacticalVotePerc").change(function()
+	{
+		//updatePollProjection();
+		//updatePollProjectionAndTacticalVote();
+	});		
 	
 	//TACTICAL VOTE PROJECTION
 	$("#tacticalButton").click(function()
@@ -611,4 +618,5 @@ $(document).ready(function(){
 		updatePollProjectionAndTacticalVote();		
 		//alert("done");
     });
+	
 });

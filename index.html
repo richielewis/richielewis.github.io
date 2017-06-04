@@ -75,8 +75,8 @@
 				<p class="centre-text">
 				The following simulator re-allocates Labour, Lib Dem and Green votes based on tactical voting.<br>
 				It uses the tactical voting recommendations from the site <a target="_blank" href="http://www.tactical2017.com">www.tactical2017.com</a><br>
-				This CRUDE projection is based on the 2015 General Election vote counts combined with recent poll data to provide a swing.<br>
-				You can set the parameters such as the amount of people participating in the tactical vote and the factor polls have on determining swing.  So, if you're a real optimist, set tactical vote participation to 100%, choose the YouGov poll and set poll factor to 1. 
+				This CRUDE projection is based on the 2015 General Election vote counts combined with recent poll data to provide a basic uniform swing.<br>
+				You can set the parameters such as the amount of people participating in the tactical vote and the factor polls have on determining swing. 
 				</p>
 				
 				<div class="row">
@@ -90,7 +90,7 @@
 							<form class="form-inline">
 								<div class="form-group">
 									<label for="tacticalVotePerc" style="width:100">Tactical Vote Percentage</label>
-									<input type="number" class="form-control" style="width:70px" id="tacticalVotePerc" value="50" min="0" max="100" >
+									<input type="number" class="form-control" style="width:70px" id="tacticalVotePerc" value="30" min="0" max="100" >
 								</div>
 								<p class="form-text text-muted">Enter the percentage of Labour, Lib Dem and Green supporters who will vote tactically (Be realistic)</p>
 								<!--<small id="percHelp" class="form-text text-muted">Enter the percentage of Tactical Vote Participation</small>-->
@@ -106,7 +106,7 @@
 									<label for="pollFactor" style="width:100">Poll Factor</label>
 									<input type="number" class="form-control" style="width:70px" id="pollFactor" value="1" min="0" max="1" step="0.1">
 								</div>
-								<p class="form-text text-muted">Enter a decimal between 0 and 1 to determine how big a factor the Poll data has on the swing. Should we take polls with a pinch of salt?</p>
+								<p class="form-text text-muted">Enter a decimal between 0 and 1 to determine how big a factor the Poll data has on the swing</p>
 								
 								<button id="tacticalButton" class="btn btn-danger" type="button">SIMULATE TACTICAL VOTE</button>
 							</form>
@@ -259,7 +259,7 @@
 			
 			<div id="info" class="tab-pane fade" role="tabpanel">
 			
-				<p class="lead">Expalanation of logic, limitations and false assumptions</p>
+				<p class="lead">Explanation of logic, limitations and false assumptions</p>
 				
 				<ul class="centre-list">
 					<li>
@@ -291,7 +291,8 @@
 					</li>
 					<li>
 						<p>
-							Assumes that the 6 parties named in the table, have candidates standing for all the same constituencies as they in the last General Election, which may not be the case, in particularly for UKIP.  This shouldn't affect the results too much. 
+							The simulation falsely assumes that the parties have candidates standing for all the same constituencies as they in the last General Election, which is not the case and may have an impact on the tactical vote result.  As an improvement I would have to integrate data around current candidates. <br>
+							Perhaps we can assume if a party has withdrawn from a constituency then it didn't receive much votes there in 2015 in which case impact is minimal. 
 						</p>
 					</li>					
 				</ul> 
@@ -336,8 +337,7 @@
 				<ul class="centre-list">
 					<li>
 						<p>
-							This is not intended to help people decide whether to vote tactically or not.  It's just out of curiosity.<br>
-							FYI, I will be tactically voting, whether it's successful or not. 
+							This is not intended to help people decide whether to vote tactically or not.  It's just done out of curiosity.<br>
 						</p>
 					</li>
 					<li>
