@@ -35,6 +35,12 @@
 	max-width: 800px;
 }
 
+.resizeable-table{
+	/*font-size: 1.2vw;	*/
+	/*word-break: break-all;*/
+	font-size: 10px;
+}
+
 .tactical-vote{
 /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ef5704+0,eab404+44,70e800+100 */
 background: #ef5704; /* Old browsers */

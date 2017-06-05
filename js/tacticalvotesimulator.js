@@ -1,8 +1,8 @@
 
 
+//VERY BASIC
 function swingAdjustment(prevLocalPercentage,swing)
 {
-	//return prevLocalPercentage*(1-pollFactor) + currentRating*pollFactor;
 	var newPercentage = prevLocalPercentage + swing;
 	if(newPercentage < 0){
 		return 0;
@@ -12,222 +12,20 @@ function swingAdjustment(prevLocalPercentage,swing)
 	}	
 }
 
+//VERY BASIC
 function calculateSwing(currentRating,prevRating,pollFactor)
 {
 	return (currentRating - prevRating)*pollFactor;
 }
 
-function updatePollProjection()
-{
-	var tacticalVoteParticipationPerc = $("#tacticalVotePerc").val();
-	var pollFactor = $("#pollFactor").val();
-	var pollSource = $("#pollster").val();
-	
-	//NATIONAL LEVEL SEAT COUNTS
-	var torySeats = 0;
-	var labourSeats = 0;
-	var libSeats = 0;
-	var greenSeats = 0;
-	var snpSeats = 0;
-	var ukipSeats = 0;
-	var otherSeats = 0;
-	
-	//PREVIOUS NATIONAL LEVEL RATINGS BASED ON 2015 VOTES
-	var toryPrevRating = 0.368;
-	var labourPrevRating = 0.305;
-	var libPrevRating = 0.079;
-	var greenPrevRating = 0.038;
-	var ukipPrevRating = 0.127;
-	var snpPrevRating = 0.047;
-	
-	//GET CURRENT RATINGS FROM SELECTED POLL 
-	poll = pollData[pollSource][pollData[pollSource].length-1];
-	var toryRating = poll.Con;
-	var ukipRating = poll.UKIP;
-	var labourRating = poll.Lab;
-	var libRating = poll.LD;
-	var greenRating = poll.Green;		
-	var snpRating = poll.SNP;		
-	
-	//CALCULATE NATIONAL SWING
-	var torySwing = calculateSwing(toryRating/100,toryPrevRating,pollFactor);
-	//alert("Tory Swing "+torySwing);
-	var ukipSwing = 0;
-	if(ukipRating != ""){
-		ukipSwing = calculateSwing(ukipRating/100,ukipPrevRating,pollFactor);		
-	}	
-	var labourSwing = calculateSwing(labourRating/100,labourPrevRating,pollFactor);
-	//alert("Labour Swing "+labourSwing);
-	var libSwing = calculateSwing(libRating/100,libPrevRating,pollFactor);
-	var greenSwing = 0;
-	if(greenRating != ""){
-		greenSwing = calculateSwing(greenRating/100,greenPrevRating,pollFactor);		
-	}
-	var snpSwing = 0;
-	if(snpRating != ""){
-		snpSwing = calculateSwing(snpRating/100,snpPrevRating,pollFactor);		
-	}
-	
-	
-	//FOR EACH CONSTITUENCY
-	for (i in cons) 
-	{
-		
-		var con = cons[i];
-		
-		
-		
-		//RESET/INIT CONSTITUENCY LEVEL VARIABLES
-		var toryVote = 0;
-		var labourVote = 0;
-		var libVote = 0;
-		var greenVote = 0;
-		var snpVote = 0;
-		var ukipVote = 0;
-		var conTotalVotes = 0;
-		var biggestVote = 0;
-		var biggestVoteParty = "";
-					
-					
-		
-		//FOR EACH PARTY CANDIDATE IN LAST ELECTION FOR THIS CONSTITUENCY
-		for (j in con.results) 
-		{
-			var result = con.results[j];
-			
-			
-			//ADD PARTY VOTES TO CONSTITUENCY TOTAL VOTE COUNT
-			conTotalVotes += result.votes;
-			
-			//INCREMENT PARTY VOTE COUNTS
-			if(result.party == "Conservative Party"){
-				toryVote += result.votes;
-			}
-			else if(result.party == "United Kingdom Independence Party"){
-				ukipVote += result.votes;
-			}					
-			else if(result.party == "Labour Party"){
-				labourVote  += result.votes;
-			}
-			else if(result.party == "Liberal Democrat"){
-				libVote  += result.votes;
-			}
-			else if(result.party == "Green Party"){
-				greenVote  += result.votes;
-			}
-			else if(result.party == "Scottish National Party"){
-				snpVote += result.votes;
-			}					
-			else
-			{
-				//FOR PARTIES IN THE "OTHER" CATEGORY 								
-				//DETERMINE IF "OTHER" PARTY VOTES IS LARGEST VOTE
-				if(result.votes > biggestVote)
-				{
-					biggestVote	= result.votes;
-					biggestVoteParty = result.party;
-				
-				}
-				
-			}
-			
-		}
-		//END OF LOOPING PARTY CANDIDATES
-
-			
-		//ADJUST VOTE COUNTS DUE TO UNIFORM NATIONAL SWING		
-		toryVote = Math.round(swingAdjustment(toryVote/conTotalVotes,torySwing)*conTotalVotes);
-		ukipVote = Math.round(swingAdjustment(ukipVote/conTotalVotes,ukipSwing)*conTotalVotes);
-		labourVote = Math.round(swingAdjustment(labourVote/conTotalVotes,labourSwing)*conTotalVotes);
-		libVote = Math.round(swingAdjustment(libVote/conTotalVotes,libSwing)*conTotalVotes);			
-		greenVote = Math.round(swingAdjustment(greenVote/conTotalVotes,greenSwing)*conTotalVotes);			
-		snpVote = Math.round(swingAdjustment(snpVote/conTotalVotes,snpSwing)*conTotalVotes);		
-							
-		
-		
-		//COMPARE VOTE COUNTS TO DETERMINE SEAT WINNER
-		if(toryVote > biggestVote)
-		{
-			biggestVote = toryVote;
-			biggestVoteParty = "Conservative Party";
-		}	
-		if(ukipVote > biggestVote)
-		{
-			biggestVote = ukipVote;
-			biggestVoteParty = "United Kingdom Independence Party";
-		}				
-		if(labourVote > biggestVote)
-		{
-			biggestVote = labourVote;
-			biggestVoteParty = "Labour Party";
-		}
-		if(libVote > biggestVote)
-		{
-			biggestVote = libVote;
-			biggestVoteParty = "Liberal Democrat";
-		}				
-		if(greenVote > biggestVote)
-		{
-			biggestVote = greenVote;
-			biggestVoteParty = "Green Party";
-		}
-		if(snpVote > biggestVote)
-		{
-			biggestVote = snpVote;
-			biggestVoteParty = "Scottish National Party";
-		}								
-		
-					
-		//GIVE SEAT TO PARTY WITH MOST VOTES
-		if(biggestVoteParty == "Conservative Party")
-		{
-			torySeats += 1;
-		}
-		else if(biggestVoteParty == "United Kingdom Independence Party")
-		{
-			ukipSeats += 1;
-		}				
-		else if(biggestVoteParty == "Labour Party")
-		{
-			labourSeats += 1;
-		}
-		else if(biggestVoteParty == "Liberal Democrat")
-		{
-			libSeats += 1;
-		}
-		else if(biggestVoteParty == "Green Party")
-		{
-			greenSeats += 1;
-		}
-		else if(biggestVoteParty == "Scottish National Party")
-		{
-			snpSeats += 1;
-		}			
-		else
-		{
-			otherSeats += 1;
-		}	
-	
-	}
-	//END LOOPING THROUGH CONSTITUENCIES
-	
-	//ADD NATIONAL LEVEL SEAT COUNTS TO TABLE
-	$("#newTory").text(torySeats);
-	$("#newLabour").text(labourSeats);
-	$("#newLib").text(libSeats);
-	$("#newSNP").text(snpSeats);
-	$("#newGreen").text(greenSeats);
-	$("#newUKIP").text(ukipSeats);
-	$("#newOther").text(otherSeats);	
-	
-		
-}
 
 
-function updatePollProjectionAndTacticalVote()
+//UPDATES TACTICAL VOTE RESULTS , NEEDS TO ALSO CALCULATE POLL SWING PROJECTION AS PART OF CALCULATION
+function simulateTacticalVote()
 {
 	$("#cons").html("");
 
+	//GET PARAMETERS
 	var tacticalVoteParticipationPerc = $("#tacticalVotePerc").val();
 	var pollFactor = $("#pollFactor").val();
 	var pollSource = $("#pollster").val();
@@ -518,6 +316,218 @@ function updatePollProjectionAndTacticalVote()
 	
 }
 
+
+
+
+//UPDATES SWING PROJECTION RESULTS
+function updatePollProjection()
+{
+	//GET PARAMETERS
+	var pollFactor = $("#pollFactor").val();
+	var pollSource = $("#pollster").val();
+	
+	//NATIONAL LEVEL SEAT COUNTS
+	var torySeats = 0;
+	var labourSeats = 0;
+	var libSeats = 0;
+	var greenSeats = 0;
+	var snpSeats = 0;
+	var ukipSeats = 0;
+	var otherSeats = 0;
+	
+	//PREVIOUS NATIONAL LEVEL RATINGS BASED ON 2015 VOTES
+	var toryPrevRating = 0.368;
+	var labourPrevRating = 0.305;
+	var libPrevRating = 0.079;
+	var greenPrevRating = 0.038;
+	var ukipPrevRating = 0.127;
+	var snpPrevRating = 0.047;
+	
+	//GET CURRENT RATINGS FROM SELECTED POLL 
+	poll = pollData[pollSource][pollData[pollSource].length-1];
+	var toryRating = poll.Con;
+	var ukipRating = poll.UKIP;
+	var labourRating = poll.Lab;
+	var libRating = poll.LD;
+	var greenRating = poll.Green;		
+	var snpRating = poll.SNP;		
+	
+	//CALCULATE NATIONAL SWING
+	var torySwing = calculateSwing(toryRating/100,toryPrevRating,pollFactor);
+	//alert("Tory Swing "+torySwing);
+	var ukipSwing = 0;
+	if(ukipRating != ""){
+		ukipSwing = calculateSwing(ukipRating/100,ukipPrevRating,pollFactor);		
+	}	
+	var labourSwing = calculateSwing(labourRating/100,labourPrevRating,pollFactor);
+	//alert("Labour Swing "+labourSwing);
+	var libSwing = calculateSwing(libRating/100,libPrevRating,pollFactor);
+	var greenSwing = 0;
+	if(greenRating != ""){
+		greenSwing = calculateSwing(greenRating/100,greenPrevRating,pollFactor);		
+	}
+	var snpSwing = 0;
+	if(snpRating != ""){
+		snpSwing = calculateSwing(snpRating/100,snpPrevRating,pollFactor);		
+	}
+	
+	
+	//FOR EACH CONSTITUENCY
+	for (i in cons) 
+	{
+		
+		var con = cons[i];
+		
+		
+		
+		//RESET/INIT CONSTITUENCY LEVEL VARIABLES
+		var toryVote = 0;
+		var labourVote = 0;
+		var libVote = 0;
+		var greenVote = 0;
+		var snpVote = 0;
+		var ukipVote = 0;
+		var conTotalVotes = 0;
+		var biggestVote = 0;
+		var biggestVoteParty = "";
+					
+					
+		
+		//FOR EACH PARTY CANDIDATE IN LAST ELECTION FOR THIS CONSTITUENCY
+		for (j in con.results) 
+		{
+			var result = con.results[j];
+			
+			
+			//ADD PARTY VOTES TO CONSTITUENCY TOTAL VOTE COUNT
+			conTotalVotes += result.votes;
+			
+			//INCREMENT PARTY VOTE COUNTS
+			if(result.party == "Conservative Party"){
+				toryVote += result.votes;
+			}
+			else if(result.party == "United Kingdom Independence Party"){
+				ukipVote += result.votes;
+			}					
+			else if(result.party == "Labour Party"){
+				labourVote  += result.votes;
+			}
+			else if(result.party == "Liberal Democrat"){
+				libVote  += result.votes;
+			}
+			else if(result.party == "Green Party"){
+				greenVote  += result.votes;
+			}
+			else if(result.party == "Scottish National Party"){
+				snpVote += result.votes;
+			}					
+			else
+			{
+				//FOR PARTIES IN THE "OTHER" CATEGORY 								
+				//DETERMINE IF "OTHER" PARTY VOTES IS LARGEST VOTE
+				if(result.votes > biggestVote)
+				{
+					biggestVote	= result.votes;
+					biggestVoteParty = result.party;
+				
+				}
+				
+			}
+			
+		}
+		//END OF LOOPING PARTY CANDIDATES
+
+			
+		//ADJUST VOTE COUNTS DUE TO UNIFORM NATIONAL SWING		
+		toryVote = Math.round(swingAdjustment(toryVote/conTotalVotes,torySwing)*conTotalVotes);
+		ukipVote = Math.round(swingAdjustment(ukipVote/conTotalVotes,ukipSwing)*conTotalVotes);
+		labourVote = Math.round(swingAdjustment(labourVote/conTotalVotes,labourSwing)*conTotalVotes);
+		libVote = Math.round(swingAdjustment(libVote/conTotalVotes,libSwing)*conTotalVotes);			
+		greenVote = Math.round(swingAdjustment(greenVote/conTotalVotes,greenSwing)*conTotalVotes);			
+		snpVote = Math.round(swingAdjustment(snpVote/conTotalVotes,snpSwing)*conTotalVotes);		
+							
+		
+		
+		//COMPARE VOTE COUNTS TO DETERMINE SEAT WINNER
+		if(toryVote > biggestVote)
+		{
+			biggestVote = toryVote;
+			biggestVoteParty = "Conservative Party";
+		}	
+		if(ukipVote > biggestVote)
+		{
+			biggestVote = ukipVote;
+			biggestVoteParty = "United Kingdom Independence Party";
+		}				
+		if(labourVote > biggestVote)
+		{
+			biggestVote = labourVote;
+			biggestVoteParty = "Labour Party";
+		}
+		if(libVote > biggestVote)
+		{
+			biggestVote = libVote;
+			biggestVoteParty = "Liberal Democrat";
+		}				
+		if(greenVote > biggestVote)
+		{
+			biggestVote = greenVote;
+			biggestVoteParty = "Green Party";
+		}
+		if(snpVote > biggestVote)
+		{
+			biggestVote = snpVote;
+			biggestVoteParty = "Scottish National Party";
+		}								
+		
+					
+		//GIVE SEAT TO PARTY WITH MOST VOTES
+		if(biggestVoteParty == "Conservative Party")
+		{
+			torySeats += 1;
+		}
+		else if(biggestVoteParty == "United Kingdom Independence Party")
+		{
+			ukipSeats += 1;
+		}				
+		else if(biggestVoteParty == "Labour Party")
+		{
+			labourSeats += 1;
+		}
+		else if(biggestVoteParty == "Liberal Democrat")
+		{
+			libSeats += 1;
+		}
+		else if(biggestVoteParty == "Green Party")
+		{
+			greenSeats += 1;
+		}
+		else if(biggestVoteParty == "Scottish National Party")
+		{
+			snpSeats += 1;
+		}			
+		else
+		{
+			otherSeats += 1;
+		}	
+	
+	}
+	//END LOOPING THROUGH CONSTITUENCIES
+	
+	//ADD NATIONAL LEVEL SEAT COUNTS TO TABLE
+	$("#newTory").text(torySeats);
+	$("#newLabour").text(labourSeats);
+	$("#newLib").text(libSeats);
+	$("#newSNP").text(snpSeats);
+	$("#newGreen").text(greenSeats);
+	$("#newUKIP").text(ukipSeats);
+	$("#newOther").text(otherSeats);	
+	
+		
+}
+
+
+
 //-----------------------------------------------------
 //-----------------------------------------------------
 //-----------------------------------------------------
@@ -598,7 +608,7 @@ $(document).ready(function(){
 	
 	
 	
-	//UPDATE POLL DATE IF POLLSTER SELECTION CHANGED
+	//UPDATE POLL DATE AND SWING PROJECTION IF POLLSTER SELECTION CHANGED
 	$("#pollster").change(function()
 	{
 		var pollSource = $("#pollster").val();
@@ -609,23 +619,35 @@ $(document).ready(function(){
 		//updatePollProjectionAndTacticalVote();
 	});	
 	
+	
+	//UPDATE SWING PROJECTION IF POLLSTER SELECTION CHANGED
 	$("#pollFactor").change(function()
 	{
 		updatePollProjection();
 		//updatePollProjectionAndTacticalVote();
 	});		
 	
+	//UPDATE TACTICAL RESULTS IF PERCENTAGE CHANGED -- REMOVED AS MADE BROWSER SLOW
 	$("#tacticalVotePerc").change(function()
 	{
 		//updatePollProjection();
 		//updatePollProjectionAndTacticalVote();
 	});		
 	
-	//TACTICAL VOTE PROJECTION
+	//UPDATE TACTICAL RESULTS WHEN RED BUTTON CLICKED 
 	$("#tacticalButton").click(function()
 	{
-		updatePollProjectionAndTacticalVote();		
+		simulateTacticalVote();		
 		//alert("done");
     });
+	
+
+	//FOR SMALL DEVICES THE NAVBAR BUTTON CHANGES
+	$(".my-nav-element").click(function()
+	{
+		$("#navbar").attr("aria-expanded","false");
+		$("#navbar").removeClass("in");
+		//alert("done");
+    });	
 	
 });
