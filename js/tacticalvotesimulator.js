@@ -533,60 +533,69 @@ function updatePollProjectionAndTacticalVote()
 $(document).ready(function(){
 	
 
-	//LOAD TACTICAL2017 RECOMMENDATIONS
+
 	recommendations = {};
+	recommendatonMapping = {};
+	cons = {};
+	pollData = {};
+	poll = {};
+	
+	
+	//LOAD TACTICAL2017 RECOMMENDATIONS	
 	$.getJSON("data/tactical2017-recommendations.json", function(data, status)
 	{
 		for (c in data) {
 			recommendations[data[c].id] = data[c].VoteFor;
 		}
-	});
-	
-	
-	//LOAD MY CUSTOM RECOMMENDATION MAPPING
-	recommendatonMapping = {};
-	$.getJSON("data/recommendationMapping.json", function(data, status)
-	{
-		recommendatonMapping = data;
-	});
-	
-	
-	//LOAD 2015 ELECTION RESULTS
-	cons = {};
-	$.getJSON("data/2015-election-results.json", function(data, status)
-	{
-		cons = data.elections[0].constituencies;
-	});	
-	
-	
-	//LOAD POLL DATA
-	pollData = {};
-	poll = {};
-	$.getJSON("data/bbc-2017-election-poll-data.json", function(data, status)
-	{
-		pollData = data;
-		pollsters = Object.keys(data);
 		
-		defaultPollster = "YouGov"
-		for(i in pollsters)
+		//LOAD MY CUSTOM RECOMMENDATION MAPPING
+		$.getJSON("data/recommendationMapping.json", function(data, status)
 		{
-			if(pollsters[i] == defaultPollster)
+			recommendatonMapping = data;
+			
+			//LOAD 2015 ELECTION RESULTS
+			$.getJSON("data/2015-election-results.json", function(data, status)
 			{
-				$("#pollster").append("<option selected value=\""+pollsters[i]+"\">"+pollsters[i]+"</option>");
-			}
-			else
-			{
-				$("#pollster").append("<option value=\""+pollsters[i]+"\">"+pollsters[i]+"</option>");
-			}
-		}
-		poll = pollData[defaultPollster][pollData[defaultPollster].length-1];
-		var pollDate = poll["Fieldwork end"];
-		$("#pollDate").text(pollDate);
+				cons = data.elections[0].constituencies;
+				
+				
+				//LOAD POLL DATA
+				$.getJSON("data/bbc-2017-election-poll-data.json", function(data, status)
+				{
+					pollData = data;
+					pollsters = Object.keys(data);
+					
+					defaultPollster = "YouGov"
+					for(i in pollsters)
+					{
+						if(pollsters[i] == defaultPollster)
+						{
+							$("#pollster").append("<option selected value=\""+pollsters[i]+"\">"+pollsters[i]+"</option>");
+						}
+						else
+						{
+							$("#pollster").append("<option value=\""+pollsters[i]+"\">"+pollsters[i]+"</option>");
+						}
+					}
+					poll = pollData[defaultPollster][pollData[defaultPollster].length-1];
+					var pollDate = poll["Fieldwork end"];
+					$("#pollDate").text(pollDate);
 
-		updatePollProjection();
-		//updatePollProjectionAndTacticalVote();
+					updatePollProjection();
+					//updatePollProjectionAndTacticalVote();
+					
+				});					
+				
+				
+			});			
+						
+			
+		});
 		
-	});	
+		
+	});
+	
+	
 	
 	
 	//UPDATE POLL DATE IF POLLSTER SELECTION CHANGED
