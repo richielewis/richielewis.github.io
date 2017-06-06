@@ -743,7 +743,7 @@ $(document).ready(function(){
 				$.getJSON("data/bbc-2017-election-poll-data-pollsters.json", function(data, status)
 				{
 					pollData = data;
-					
+					pollsters = Object.keys(pollData);
 					
 					//LOAD POLL DATA FLATTENED AND SORTED BY POLL DATE
 					$.getJSON("data/bbc-2017-election-poll-data.json", function(data, status)
@@ -755,8 +755,7 @@ $(document).ready(function(){
 						newPollster.push(pollOfPolls);
 						pollData["Poll of Polls"] = newPollster;
 						
-						
-						pollsters = Object.keys(pollData);
+						pollsters.unshift("Poll of Polls");
 						
 						defaultPollster = "Poll of Polls";
 						for(i in pollsters)
