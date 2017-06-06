@@ -741,13 +741,13 @@ $(document).ready(function(){
 				
 				//LOAD POLL DATA GROUPED BY POLLSTER
 				//$.getJSON("data/bbc-2017-election-poll-data.json", function(data, status)
-				$.getJSON("http://www.bbc.co.uk/indepthtoolkit/data-sets/2017_uk_general_election_polltracker/json-with-props", function(data, status)
+				$.getJSON("https://www.bbc.co.uk/indepthtoolkit/data-sets/2017_uk_general_election_polltracker/json-with-props", function(data, status)
 				{
 					pollData = data;
 					
 					
 					//LOAD POLL DATA FLATTENED AND SORTED BY POLL DATE
-					$.getJSON("http://www.bbc.co.uk/indepthtoolkit/data-sets/2017_uk_general_election_polltracker/json", function(data, status)
+					$.getJSON("https://www.bbc.co.uk/indepthtoolkit/data-sets/2017_uk_general_election_polltracker/json", function(data, status)
 					{
 					
 						var pollOfPolls = getPollOfPolls_MedianMethod(data);
