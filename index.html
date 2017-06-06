@@ -97,7 +97,7 @@
 								
 								<div class="form-group">
 									<label for="pollster" style="width:100">Pollster</label>
-									<select id="pollster" class="form-control" style="max-width:100px;display:inline-block;"value="YouGov"></select>
+									<select id="pollster" class="form-control" style="max-width:150px;display:inline-block;"value="YouGov"></select>
 								</div>
 								<p class="form-text text-muted">Choose a pollster. The most recent poll from the selected pollster will be used</p>
 								<p>Date of Poll: <span id="pollDate"></span></p>
@@ -149,6 +149,7 @@
 											<td>22</td>
 										</tr>
 									</table>
+									<div class="tory">Tories won with a majority of 5 seats</div>
 									
 								</div>	
 							</div>
@@ -183,7 +184,7 @@
 											<td id="newOther"></td>
 										</tr>
 									</table>
-									
+									<div id="newWinner"></div>
 								</div>
 							</div>
 						</div>
@@ -216,6 +217,7 @@
 											<td id="newOther2"></td>
 										</tr>
 									</table>
+									<div id="newWinner2"></div>
 								</div>
 							</div>
 						</div>						
@@ -323,9 +325,14 @@
 					</li>
 					<li>
 						<p>
-							<strong>Poll Data</strong> - taken from the BBC website.  Click <a target="_blank" href="http://www.bbc.co.uk/indepthtoolkit/data-sets/2017_uk_general_election_polltracker/json-with-props">here</a> to view data. 
+							<strong>Poll Data</strong> - taken from the BBC website.  Click <a target="_blank" href="http://www.bbc.co.uk/indepthtoolkit/data-sets/2017_uk_general_election_polltracker/json-with-props">here</a> to view data grouped by Pollster.  Click <a target="_blank" href="http://www.bbc.co.uk/indepthtoolkit/data-sets/2017_uk_general_election_polltracker/json">here</a> to view data with ungrouped polls ordered by date. 
 						</p>
 					</li>
+					<li>
+						<p>
+							<strong>Poll of Polls</strong> - currently calculated using the above Poll Data with the BBC website's method of taking the median of the most recent 7 polls.
+						</p>
+					</li>					
 					<li>
 						<p>
 							<strong>My own custom recommendation mappings</strong> - needed to map party names from the tactical recommendations data to election data and also handle non-precise recommendations.   Click <a target="_blank" href="data/recommendationMapping.json">here</a> to view data. 

@@ -19,11 +19,94 @@ function calculateSwing(currentRating,prevRating,pollFactor)
 }
 
 
+//CURRENTLY USING BBC METHOD OF TAKING MEDIAN OF LAST 7 POLLS
+function getPollOfPolls_MedianMethod(pollData)
+{
+	var medianSize = 7;
+	
+	var newPoll = {};
+	newPoll.Con = getPollMedianForParty(pollData,medianSize,3);
+	newPoll.UKIP = getPollMedianForParty(pollData,medianSize,6);
+	newPoll.Lab = getPollMedianForParty(pollData,medianSize,4);
+	newPoll.LD = getPollMedianForParty(pollData,medianSize,5);
+	newPoll.Green = getPollMedianForParty(pollData,medianSize,7);
+	newPoll.SNP = getPollMedianForParty(pollData,medianSize,8);
+	
+	var dateFrom = pollData[pollData.length-medianSize][2];
+	var dateTo = pollData[pollData.length-1][2];
+	newPoll["Fieldwork end"] = dateFrom + " - " + dateTo;
+	
+	return newPoll;
+}
+
+//FOR NOW ONLY CONCERNS LABOUR, GREEN, LIB DEM COALITIONS
+function formCoalitions(torySeats,ukipSeats,labourSeats,libSeats,greenSeats,snpSeats,otherSeats)
+{
+		var labour = "<span class=\"labour\">Labour</span>";
+		var libdems = "<span class=\"libdem\">Lib Dems</span>";
+		var greens = "<span class=\"green-party\">Greens</span>";
+		
+		if(labourSeats+greenSeats >= 326)
+		{
+			return "MAJORITY COALITION can be formed between "+labour+" and "+greens+" with "+(labourSeats+greenSeats)+" seats";
+		}
+		else if(libSeats+greenSeats >= 326)
+		{
+			return "MAJORITY COALITION can be formed between "+libdems+" and "+greens+" with "+(libSeats+greenSeats)+" seats";
+		}
+		else if(labourSeats+libSeats >= 326)
+		{
+			return "MAJORITY COALITION can be formed between "+labour+" and "+libdems+" with "+(labourSeats+libSeats)+" seats";
+		}
+		else if(labourSeats+libSeats+greenSeats >= 326)
+		{
+			return "MAJORITY COALITION can be formed between "+labour+", "+libdems+" and "+greens+" with "+(labourSeats+libSeats+greenSeats)+" seats";
+		}
+		else
+		{
+			return "";
+		}
+
+}
+
+//GETTING THE MEDIAN INVOLVES THE FOLLOWING UGLY FUNCTION, AVERAGE WOULD BE SO SIMPLE AND MUCH NICER
+function getPollMedianForParty(pollData,medianSize,partyIndex)
+{
+		var partyRatings = [];
+		for(count = 1; count <= medianSize; count++)
+		{
+			var rating = pollData[pollData.length-count][partyIndex];
+			if(rating != "")
+			{
+				partyRatings.push(rating);
+			}
+		}
+		partyRatings.sort();
+
+		//CHECK IF NO RATINGS FOUND FOR PARTY IN LAST N POLLS
+		if(partyRatings.length == 0)
+		{
+			return "";
+		}
+		//CHECK IF EVEN OR ODD NUMBER OF RATINGS FOUND
+		else if(partyRatings.length % 2 == 0)
+		{
+			var lowerMiddleIndex = partyRatings.length/2 - 1;
+			return (partyRatings[lowerMiddleIndex] + partyRatings[lowerMiddleIndex+1])/2;
+		}
+		else
+		{
+			var middleIndex = Math.floor(partyRatings.length/2);
+			return partyRatings[middleIndex];
+		}
+}
+
 
 //UPDATES TACTICAL VOTE RESULTS , NEEDS TO ALSO CALCULATE POLL SWING PROJECTION AS PART OF CALCULATION
 function simulateTacticalVote()
 {
 	$("#cons").html("");
+	$("#newWinner2").html("");
 
 	//GET PARAMETERS
 	var tacticalVoteParticipationPerc = $("#tacticalVotePerc").val();
@@ -313,6 +396,47 @@ function simulateTacticalVote()
 	
 	
 	
+	//DETERMINE WHICH PARTY HAS THE MOST SEATS
+	var winningSeats = torySeats;
+	var winningParty = "Tories";
+	var winnerStyle = "tory";
+	
+	if(labourSeats >= winningSeats)
+	{
+		winningSeats = labourSeats;
+		winningParty = "Labour";
+		winnerStyle = "labour";
+	}
+	if(libSeats >= winningSeats)
+	{
+		winningSeats = libSeats;
+		winningParty = "Lib Dems";
+		winnerStyle = "libdem";
+	}
+	
+	
+	//WRITE SUMMARY ON WHETHER WINNING PARTY HAS MAJORITY
+	var summary = "";
+	if(winningSeats >= 326)
+	{
+		summary = winningParty +" to win with a majority of "+(winningSeats-325)+" seats";
+	}
+	else
+	{
+		//WRITE SUMMARY ON HUNG PARLIAMENT AND WHETHER COALITIONS CAN BE FORMED
+		var coalitionText = formCoalitions(torySeats,ukipSeats,labourSeats,libSeats,greenSeats,snpSeats,otherSeats);
+		if(coalitionText == "")
+		{
+			summary = "<span class=\"hung-parliament\">HUNG PARLIAMENT</span> "+winningParty+" need "+(326-winningSeats)+" more seats for majority";
+		}
+		else
+		{
+			summary = "<span class=\"hung-parliament\">HUNG PARLIAMENT</span> - "+coalitionText;
+		}
+	}
+	$("#newWinner2").attr("class", winnerStyle);
+	$("#newWinner2").append(summary);
+	
 	
 }
 
@@ -322,6 +446,8 @@ function simulateTacticalVote()
 //UPDATES SWING PROJECTION RESULTS
 function updatePollProjection()
 {
+	$("#newWinner").html("");
+	
 	//GET PARAMETERS
 	var pollFactor = $("#pollFactor").val();
 	var pollSource = $("#pollster").val();
@@ -523,6 +649,50 @@ function updatePollProjection()
 	$("#newUKIP").text(ukipSeats);
 	$("#newOther").text(otherSeats);	
 	
+	
+	
+	
+	//DETERMINE WHICH PARTY HAS THE MOST SEATS
+	var winningSeats = torySeats;
+	var winningParty = "Tories";
+	var winnerStyle = "tory";
+	
+	if(labourSeats >= winningSeats)
+	{
+		winningSeats = labourSeats;
+		winningParty = "Labour";
+		winnerStyle = "labour";
+	}
+	if(libSeats >= winningSeats)
+	{
+		winningSeats = libSeats;
+		winningParty = "Lib Dems";
+		winnerStyle = "libdem";
+	}
+	
+	
+	//WRITE SUMMARY ON WHETHER WINNING PARTY HAS MAJORITY
+	var summary = "";
+	if(winningSeats >= 326)
+	{
+		summary = winningParty +" to win with a majority of "+(winningSeats-325)+" seats";
+	}
+	else
+	{
+		//WRITE SUMMARY ON HUNG PARLIAMENT AND WHETHER COALITIONS CAN BE FORMED
+		var coalitionText = formCoalitions(torySeats,ukipSeats,labourSeats,libSeats,greenSeats,snpSeats,otherSeats);
+		if(coalitionText == "")
+		{
+			summary = "<span class=\"hung-parliament\">HUNG PARLIAMENT</span> "+winningParty+" need "+(326-winningSeats)+" more seats for majority";
+		}
+		else
+		{
+			summary = "<span class=\"hung-parliament\">HUNG PARLIAMENT</span> - "+coalitionText;
+		}
+	}
+	$("#newWinner").attr("class", winnerStyle);
+	$("#newWinner").append(summary);	
+	
 		
 }
 
@@ -569,30 +739,53 @@ $(document).ready(function(){
 				cons = data.elections[0].constituencies;
 				
 				
-				//LOAD POLL DATA
-				$.getJSON("data/bbc-2017-election-poll-data.json", function(data, status)
+				//LOAD POLL DATA GROUPED BY POLLSTER
+				//$.getJSON("data/bbc-2017-election-poll-data.json", function(data, status)
+				$.getJSON("http://www.bbc.co.uk/indepthtoolkit/data-sets/2017_uk_general_election_polltracker/json-with-props", function(data, status)
 				{
 					pollData = data;
-					pollsters = Object.keys(data);
 					
-					defaultPollster = "YouGov"
-					for(i in pollsters)
+					
+					//LOAD POLL DATA FLATTENED AND SORTED BY POLL DATE
+					$.getJSON("http://www.bbc.co.uk/indepthtoolkit/data-sets/2017_uk_general_election_polltracker/json", function(data, status)
 					{
-						if(pollsters[i] == defaultPollster)
+					
+						var pollOfPolls = getPollOfPolls_MedianMethod(data);
+						
+						var newPollster = [];
+						newPollster.push(pollOfPolls);
+						pollData["Poll of Polls"] = newPollster;
+						
+						
+						pollsters = Object.keys(pollData);
+						
+						defaultPollster = "Poll of Polls";
+						for(i in pollsters)
 						{
-							$("#pollster").append("<option selected value=\""+pollsters[i]+"\">"+pollsters[i]+"</option>");
+							if(pollsters[i] == defaultPollster)
+							{
+								$("#pollster").append("<option selected value=\""+pollsters[i]+"\">"+pollsters[i]+"</option>");
+							}
+							else
+							{
+								$("#pollster").append("<option value=\""+pollsters[i]+"\">"+pollsters[i]+"</option>");
+							}
 						}
-						else
-						{
-							$("#pollster").append("<option value=\""+pollsters[i]+"\">"+pollsters[i]+"</option>");
-						}
-					}
-					poll = pollData[defaultPollster][pollData[defaultPollster].length-1];
-					var pollDate = poll["Fieldwork end"];
-					$("#pollDate").text(pollDate);
+						
+						
+											
+						poll = pollData[defaultPollster][pollData[defaultPollster].length-1];
+						var pollDate = poll["Fieldwork end"];
+						$("#pollDate").text(pollDate);
 
-					updatePollProjection();
-					//updatePollProjectionAndTacticalVote();
+						updatePollProjection();
+						//updatePollProjectionAndTacticalVote();						
+											
+																		
+					});					
+					
+					
+					
 					
 				});					
 				
