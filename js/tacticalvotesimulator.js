@@ -45,10 +45,12 @@ function formCoalitions(torySeats,ukipSeats,labourSeats,libSeats,greenSeats,snpS
 		var labour = "<span class=\"labour\">Labour</span>";
 		var libdems = "<span class=\"libdem\">Lib Dems</span>";
 		var greens = "<span class=\"green-party\">Greens</span>";
+		var snp = "<span class=\"snp\">SNP</span>";
+		var coalitionText = "<span class=\"coalition\">MAJORITY COALITION</span>"
 		
 		if(labourSeats+greenSeats >= 326)
 		{
-			return "MAJORITY COALITION can be formed between "+labour+" and "+greens+" with "+(labourSeats+greenSeats)+" seats";
+			return coalitionText+" can be formed between "+labour+" and "+greens+" with "+(labourSeats+greenSeats)+" seats";
 		}
 		else if(libSeats+greenSeats >= 326)
 		{
@@ -56,12 +58,28 @@ function formCoalitions(torySeats,ukipSeats,labourSeats,libSeats,greenSeats,snpS
 		}
 		else if(labourSeats+libSeats >= 326)
 		{
-			return "MAJORITY COALITION can be formed between "+labour+" and "+libdems+" with "+(labourSeats+libSeats)+" seats";
+			return coalitionText+" can be formed between "+labour+" and "+libdems+" with "+(labourSeats+libSeats)+" seats";
 		}
 		else if(labourSeats+libSeats+greenSeats >= 326)
 		{
-			return "MAJORITY COALITION can be formed between "+labour+", "+libdems+" and "+greens+" with "+(labourSeats+libSeats+greenSeats)+" seats";
+			return coalitionText+" can be formed between "+labour+", "+libdems+" and "+greens+" with "+(labourSeats+libSeats+greenSeats)+" seats";
 		}
+		else if(labourSeats+snpSeats >= 326)
+		{
+			return coalitionText+" can be formed between "+labour+" and "+snp+" with "+(labourSeats+snpSeats)+" seats";
+		}
+		else if(libSeats+snpSeats >= 326)
+		{
+			return coalitionText+" can be formed between "+libdems+" and "+snp+" with "+(libSeats+snpSeats)+" seats";
+		}
+		else if(labourSeats+libSeats+snpSeats >= 326)
+		{
+			return coalitionText+" can be formed between "+labour+", "+libdems+" and "+snp+" with "+(labourSeats+libSeats+snpSeats)+" seats";
+		}
+		else if(labourSeats+libSeats+snpSeats+greenSeats >= 326)
+		{
+			return coalitionText+" can be formed between "+labour+", "+libdems+", "+greens+" and "+snp+" with "+(labourSeats+libSeats+greenSeats+snpSeats)+" seats";
+		}			
 		else
 		{
 			return "";
@@ -431,7 +449,8 @@ function simulateTacticalVote()
 		}
 		else
 		{
-			summary = "<span class=\"hung-parliament\">HUNG PARLIAMENT</span> - "+coalitionText;
+			winnerStyle = "other-party";
+			summary = coalitionText;
 		}
 	}
 	$("#newWinner2").attr("class", winnerStyle);
@@ -687,7 +706,8 @@ function updatePollProjection()
 		}
 		else
 		{
-			summary = "<span class=\"hung-parliament\">HUNG PARLIAMENT</span> - "+coalitionText;
+			winnerStyle = "other-party";
+			summary = coalitionText;
 		}
 	}
 	$("#newWinner").attr("class", winnerStyle);
