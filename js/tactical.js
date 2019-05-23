@@ -142,6 +142,8 @@ function buildBarChart(polledResult,partyPercentages,partySeats,remainLeaveResul
 	};
 
 	var ctx = document.getElementById('canvas').getContext('2d');
+	ctx.height = 500;
+	
 	config = {
 		type: 'bar',
 		data: barChartData,
@@ -182,7 +184,8 @@ function buildBarChart(polledResult,partyPercentages,partySeats,remainLeaveResul
 					//}
 				}],
 			},
-			animation: {duration: 0}
+			animation: {duration: 0},
+			maintainAspectRatio: false
 				
 		}
 	};
@@ -268,7 +271,8 @@ function buildLineGraph(remainResults,regionSeats)
                     },
 					gridLines : {display:false}
 				}]
-			}
+			},
+			maintainAspectRatio: false
 			
 			
 		}
