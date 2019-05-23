@@ -617,6 +617,7 @@ $(document).ready(function(){
 			}
 		}
 		
+		$("#party").html("");
 		for (i in regionalRemainParties)
 		{
 			party = regionalRemainParties[i]
