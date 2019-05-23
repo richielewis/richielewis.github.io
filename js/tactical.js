@@ -165,7 +165,11 @@ function buildBarChart(polledResult,partyPercentages,partySeats,remainLeaveResul
 					display: true,
 					position: 'left',
 					id: 'y-axis-1',
-					gridLines : {display:false}
+					gridLines : {display:false},
+					scaleLabel: {
+						display: true,
+						labelString: 'Vote Percentage'
+					}
 				}, {
 					//type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
 					display: true,
@@ -177,7 +181,11 @@ function buildBarChart(polledResult,partyPercentages,partySeats,remainLeaveResul
 								fixedStepSize: 1,
 								stepSize: 1,
 								precision:0
-                            }
+                            },
+					scaleLabel: {
+						display: true,
+						labelString: 'Seats'
+					}
 					//,
 					//gridLines: {
 					//	drawOnChartArea: false
